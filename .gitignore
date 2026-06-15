@@ -2,6 +2,7 @@
 data/train.csv
 data/test.csv
 data/sample_submission.csv
+/data/data_description.txt
 data/*.zip
 
 # Środowisko
@@ -16,3 +17,4 @@ __pycache__/
 # Inne
 .claude/
 .gitignore
+
