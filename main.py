@@ -3,7 +3,7 @@ import pandas as pd
 
 from src.transformers import FeatureAdder
 
-MODEL_PATH = 'models/linear_final_model.pkl'
+MODEL_PATH = 'models/final_model.pkl'
 DATA_PATH = 'data/test.csv'
 OUTPUT_PATH = 'reports/housing_output.csv'
 

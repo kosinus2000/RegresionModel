@@ -1,90 +1,111 @@
-# House Prices — Linear Regression Model
+# Ames House Price Prediction
 
-Predicting house sale prices using linear regression on the Ames Housing dataset.
-Built as a learning project following the structure from *Hands-On Machine Learning with Scikit-Learn, Keras and TensorFlow* by Aurélien Géron.
+A machine-learning project for predicting residential property sale prices using the **House Prices: Advanced Regression Techniques** dataset. The project covers exploratory data analysis, feature engineering, model comparison, hyperparameter tuning, and Kaggle-ready prediction generation.
 
----
+## Dataset
 
-## Overview
+The data comes from Kaggle's [House Prices: Advanced Regression Techniques](https://www.kaggle.com/competitions/house-prices-advanced-regression-techniques) competition.
 
-| | |
-|---|---|
-| **Dataset** | [House Prices: Advanced Regression Techniques](https://www.kaggle.com/competitions/house-prices-advanced-regression-techniques) |
-| **Records** | 1460 houses |
-| **Features** | 80 (numerical + categorical) |
-| **Target** | `SalePrice` — house sale price in USD |
-| **Model** | Linear Regression (scikit-learn) |
+| File | Rows | Description |
+| --- | ---: | --- |
+| `train.csv` | 1,460 | 80 property features and the target variable, `SalePrice` |
+| `test.csv` | 1,459 | Property features without `SalePrice` |
 
----
+The dataset files are not tracked in the repository. Download them from the Kaggle competition and place them in `data/`. See [`data/data_description.txt`](data/data_description.txt) for the original feature reference.
 
 ## Project Structure
 
-```
+```text
 RegresionModel/
-├── data/                   # datasets (not included in repo — see data/README.md)
-│   └── README.md
-├── notebooks/
-│   ├── data_analize.ipynb      # exploratory data analysis
-│   └── data_edition.ipynb      # data cleaning and feature engineering
-├── src/
-│   ├── data_loader.py      # loading and splitting data
-│   ├── preprocessing.py    # feature engineering and transformations
-│   └── evaluate.py         # metrics (RMSE, R²)
+├── data/
+│   ├── train.csv                         # training data; downloaded separately
+│   ├── test.csv                          # prediction data; downloaded separately
+│   ├── sample_submission.csv             # Kaggle submission example
+│   └── data_description.txt              # feature descriptions
 ├── models/
-│   └── linear_regression.pkl
-├── requirements.txt
-└── README.md
+│   └── final_model.pkl                   # trained scikit-learn pipeline
+├── notebooks/
+│   ├── 01_data_analize.ipynb             # exploratory data analysis
+│   ├── 02_data_edition.ipynb             # data preparation and feature engineering
+│   └── 03_model.ipynb                    # model evaluation, tuning, and export
+├── reports/
+│   └── housing_output.csv                # generated predictions
+├── src/
+│   ├── data_loader.py                    # training-data loader
+│   └── transformers.py                   # custom FeatureAdder transformer
+├── main.py                               # prediction script
+└── requirements.txt
 ```
 
----
+## Setup
 
-## Getting Started
+Requirements: Python 3 and `pip`.
 
-**1. Clone the repository**
 ```bash
-git clone https://github.com/your-username/RegresionModel.git
+git clone <repository-url>
 cd RegresionModel
+python -m venv .venv
 ```
 
-**2. Install dependencies**
+Activate the environment:
+
 ```bash
-pip install -r requirements.txt
+# Windows PowerShell
+.venv\Scripts\Activate.ps1
+
+# macOS / Linux
+source .venv/bin/activate
 ```
 
-**3. Download the dataset**
+Install the dependencies:
 
-Download `train.csv` from [Kaggle](https://www.kaggle.com/competitions/house-prices-advanced-regression-techniques/data) and place it in the `data/` folder.
-
-**4. Run**
 ```bash
-python src/data_loader.py
+python -m pip install -r requirements.txt
 ```
 
----
+Download `train.csv` and `test.csv` from the [competition data page](https://www.kaggle.com/competitions/house-prices-advanced-regression-techniques/data), then put both files in `data/`.
 
-## Results
+## Generate Predictions
 
-| Metric | Value |
-|---|---|
-| RMSE | — |
-| R² | — |
+The repository includes a trained model. From the project root, run:
 
-*Results will be updated after model training.*
+```bash
+python main.py
+```
 
----
+The script loads `models/final_model.pkl`, predicts prices for `data/test.csv`, and writes `reports/housing_output.csv`. The generated file contains the `Id` and `SalePrice` columns required for a Kaggle submission.
 
-## Tech Stack
+## Modelling Workflow
 
-- Python 3.x
+The notebooks document the full workflow:
+
+1. `01_data_analize.ipynb` explores the Ames Housing data.
+2. `02_data_edition.ipynb` prepares the data and develops features.
+3. `03_model.ipynb` evaluates linear regression, decision tree, random forest, Ridge regression, and neural-network approaches; it also tunes candidate models with cross-validation.
+
+The exported final pipeline uses a tuned `DecisionTreeRegressor` with preprocessing for numerical and categorical features. Its recorded hold-out test-set RMSE is **33,959.93 USD**.
+
+## Feature Engineering
+
+The custom [`FeatureAdder`](src/transformers.py) creates and adjusts features including:
+
+- total floor area (`TotalSF`);
+- property age, remodel age, and remodel flag;
+- total bathroom count (`TotalBath`);
+- garage area per car;
+- binary indicators for a pool, basement, garage, and fireplace;
+- an interaction between overall quality and living area (`QualXSF`).
+
+## Technology Stack
+
+- Python
 - scikit-learn
-- pandas
-- numpy
-- matplotlib
-- seaborn
-
----
+- pandas and NumPy
+- matplotlib and seaborn
+- Jupyter
+- joblib
 
 ## References
 
-- Géron, A. — *Hands-On Machine Learning with Scikit-Learn, Keras and TensorFlow*
-- [Kaggle — House Prices Competition](https://www.kaggle.com/competitions/house-prices-advanced-regression-techniques)
+- Aurélien Géron, *Hands-On Machine Learning with Scikit-Learn, Keras and TensorFlow*
+- [Kaggle — House Prices: Advanced Regression Techniques](https://www.kaggle.com/competitions/house-prices-advanced-regression-techniques)
