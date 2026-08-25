@@ -83,7 +83,7 @@ The notebooks document the full workflow:
 2. `02_data_edition.ipynb` prepares the data and develops features.
 3. `03_model.ipynb` evaluates linear regression, decision tree, random forest, Ridge regression, and neural-network approaches; it also tunes candidate models with cross-validation.
 
-The exported final pipeline uses a tuned `DecisionTreeRegressor` with preprocessing for numerical and categorical features. Its recorded hold-out test-set RMSE is **33,959.93 USD**.
+The exported final pipeline uses a tuned `RandomForestRegressor` with preprocessing for numerical and categorical features. Its recorded hold-out test-set RMSE is **30,428.73 USD**.
 
 ## Feature Engineering
 
